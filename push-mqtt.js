@@ -22,19 +22,11 @@ const main = async () => {
   let credentials = null;
   // Check if credentials are existing
   if (fs.existsSync('credentials.json')) {
-    console.log('Credentials found -> reusing them...');
+    console.log('Credentials found');
     credentials = JSON.parse(fs.readFileSync('credentials.json').toString());
   } else {
     // Register push credentials
-    console.log('No credentials found -> register new...');
-    const pushService = new PushRegisterService();
-    credentials = await pushService.createPushCredentials();
-    // Store credentials
-    fs.writeFileSync('credentials.json', JSON.stringify(credentials));
-
-    // We have to wait shortly to give google some time to process the registration
-    console.log('Wait a short time (5sec)...');
-    await sleep(5 * 1000);
+    throw new Error("Missing credentials.json. Use eufy-node-client-examples to get this.")
   }
 
   // Start push client
@@ -43,9 +35,25 @@ const main = async () => {
     securityToken: credentials.checkinResponse.securityToken,
   });
   pushClient.connect((msg) => {
-    mqttClient.publish(msg);
-    console.log('Got push message and forwarded to mqtt:', msg);
-  });
+    console.log('Got push message:', msg);
+    payload = JSON.parse(msg.payload.doorbell)
+    forwarded = false
+    if (payload.event_type == 3102){ //"Someone is at your door"
+      data = payload.event_time + "," + payload.pic_url
+      topic = "olympus/frontdoor/doorbell/presence"
+      mqttClient.publish(topic, data);
+      forwarded = true
+    }
+    else if (payload.event_type == 3103){ //doorbell ring
+      data = payload.event_time + "," + payload.pic_url
+      topic = "olympus/frontdoor/doorbell/ring"
+      mqttClient.publish(topic, data);
+      forwarded = true
+    }
+    if (forwarded){
+      console.log("Forwarded push to mqtt", topic, data)
+    }
+   });
 
   // Register at eufy
   const fcmToken = credentials.gcmResponse.token;

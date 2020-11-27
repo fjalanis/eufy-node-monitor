@@ -1,42 +1,27 @@
-# eufy-node-client-examples
+# eufy-node-monitor
 
-This repository shows how to use the [eufy-node-client](https://github.com/JanLoebel/eufy-node-client).
+This repository focuses on exposing mqtt services for eufy camera hijacking push notifications using https://github.com/JanLoebel/eufy-node-client (based on https://github.com/JanLoebel/eufy-node-client-examples)
 
 ## Getting started
 ```
 # Clone the repository
-git clone https://github.com/JanLoebel/eufy-node-client-examples
+git clone https://github.com/fjalanis/eufy-node-monitor
 
 # Change into the cloned directory
-cd eufy-node-client-examples
+cd eufy-node-monitor
 
 # Install dependencies
 npm install
 
-# Create .env-file via example
+# Create .env-file via example and fill out USRNAME, PASSWD, and MQTT_BROKER_URL
 cp .env.example .env
+
+# Create push credentials
+node get-push-credentials.js
+
+# Run push notification to mqtt conversions
+node push-mqtt.js
 ```
-
-Edit the `.env`-file and provide `USRNAME` and `PASSWRD`. Now call `node examples/http-read-data/index.js` and wait some time. You should see now more information needed for other examples:
-```
-P2P_DID <P2P_DID>
-ACTOR_ID <ACTOR_ID>
-STATION_SN <STATION_SN>
-DSK_KEY <DSK_KEY>
-```
-Take that values and enter them into the `.env`-file.
-
-## Examples
-
-### http-read-data
-This example shows how to create the `HttpClient` and calling methods on it. This special examples prints all needed information to start a peer-2-peer connection (see: `p2p-local`).
-
-Execute: `node examples/http-read-data/index.js` 
-
-### p2p-local
-In the same network as the base station we can create a `DeviceClientService` after resolving the port with the `LocalLookupService`. With this p2p-connection we can send commands to the base station. In the example we're changing the arm-mode to `HOME`.
-
-Execute: `node examples/p2p-local/index.js` 
 
 ### push-logging
 To receive push notifications we have to simulate an android device and register at FCM/GCM. We should only register once, so the example saves registered credentials and is reusing them on rerun. After we have credentials we can start listening on FCM/GCM and tell eufy to send push notifications for your account to this credentials.
@@ -48,9 +33,6 @@ This example shows how to forward received push messages to a simple mqtt-broker
 
 Execute: `node examples/push-mqtt/index.js` 
 
-## FAQ
+**Full credit to https://github.com/JanLoebel**
 
-- Does it work also with `eufy (any product name)`?
-  - To be honest, I don't know. Currently I only have the wireless doorbell with a base station. Provide me another device and I can see what I can do.
-
-- ...
+I just rearranged some files to make it more friendly to run on my server

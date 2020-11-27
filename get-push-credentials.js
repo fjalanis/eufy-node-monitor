@@ -14,21 +14,16 @@ const main = async () => {
 
   let credentials = null;
   // Check if credentials are existing
-  if (fs.existsSync('credentials.json')) {
-    console.log('Credentials found -> reusing them...');
-    credentials = JSON.parse(fs.readFileSync('credentials.json').toString());
-  } else {
-    // Register push credentials
-    console.log('No credentials found -> register new...');
-    const pushService = new PushRegisterService();
-    credentials = await pushService.createPushCredentials();
-    // Store credentials
-    fs.writeFileSync('credentials.json', JSON.stringify(credentials));
+  // Register push credentials
+  console.log('Register new credentials...');
+  const pushService = new PushRegisterService();
+  credentials = await pushService.createPushCredentials();
+  // Store credentials
+  fs.writeFileSync('credentials.json', JSON.stringify(credentials));
 
-    // We have to wait shortly to give google some time to process the registration
-    console.log('Wait a short time (5sec)...');
-    await sleep(5 * 1000);
-  }
+  // We have to wait shortly to give google some time to process the registration
+  console.log('Wait a short time (5sec)...');
+  await sleep(5 * 1000);
 
   // Start push client
   const pushClient = await PushClient.init({
