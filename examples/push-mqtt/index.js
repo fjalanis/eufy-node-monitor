@@ -4,11 +4,11 @@ const mqtt = require('async-mqtt');
 const { PushRegisterService, PushClient, HttpService, sleep } = require('eufy-node-client');
 
 dotenv.config();
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
+const USRNAME = process.env.USRNAME;
+const PASSWRD = process.env.PASSWRD;
 const MQTT_BROKER_URL = process.env.MQTT_BROKER_URL;
-if (!USERNAME || !PASSWORD || !MQTT_BROKER_URL) {
-  throw new Error(`Please fill in 'USERNAME' & 'PASSWORD' & 'MQTT_BROKER_URL' values in your .env-file!`);
+if (!USRNAME || !PASSWRD || !MQTT_BROKER_URL) {
+  throw new Error(`Please fill in 'USRNAME' & 'PASSWRD' & 'MQTT_BROKER_URL' values in your .env-file!`);
 }
 
 const main = async () => {
@@ -49,7 +49,7 @@ const main = async () => {
 
   // Register at eufy
   const fcmToken = credentials.gcmResponse.token;
-  const httpService = new HttpService(USERNAME, PASSWORD);
+  const httpService = new HttpService(USRNAME, PASSWRD);
   await httpService.registerPushToken(fcmToken);
   console.log('Registered at eufy with:', fcmToken);
 

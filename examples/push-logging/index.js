@@ -3,10 +3,10 @@ const fs = require('fs');
 const { PushRegisterService, PushClient, HttpService, sleep } = require('eufy-node-client');
 
 dotenv.config();
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
-if (!USERNAME || !PASSWORD) {
-  throw new Error(`Please fill in 'USERNAME' & 'PASSWORD' values in your .env-file!`);
+const USRNAME = process.env.USRNAME;
+const PASSWRD = process.env.PASSWRD;
+if (!USRNAME || !PASSWRD) {
+  throw new Error(`Please fill in 'USRNAME' & 'PASSWRD' values in your .env-file!`);
 }
 
 const main = async () => {
@@ -41,7 +41,7 @@ const main = async () => {
 
   // Register at eufy
   const fcmToken = credentials.gcmResponse.token;
-  const httpService = new HttpService(USERNAME, PASSWORD);
+  const httpService = new HttpService(USRNAME, PASSWRD);
   await httpService.registerPushToken(fcmToken);
   console.log('Registered at eufy with:', fcmToken);
 

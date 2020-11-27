@@ -17,7 +17,7 @@ npm install
 cp .env.example .env
 ```
 
-Edit the `.env`-file and provide `USERNAME` and `PASSWORD`. Now call `node examples/http-read-data/index.js` and wait some time. You should see now more information needed for other examples:
+Edit the `.env`-file and provide `USRNAME` and `PASSWRD`. Now call `node examples/http-read-data/index.js` and wait some time. You should see now more information needed for other examples:
 ```
 P2P_DID <P2P_DID>
 ACTOR_ID <ACTOR_ID>

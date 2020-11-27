@@ -2,14 +2,15 @@ const dotenv = require('dotenv');
 const { HttpService } = require('eufy-node-client');
 
 dotenv.config();
-const USERNAME = process.env.USERNAME || 'YOUR_USERNAME';
-const PASSWORD = process.env.PASSWORD || 'YOUR_PASSWORD';
-if (!USERNAME || !PASSWORD) {
+const USRNAME = process.env.USRNAME || 'YOUR_USERNAME';
+const PASSWRD = process.env.PASSWRD || 'YOUR_PASSWORD';
+console.log("usr", USRNAME)
+if (!USRNAME || !PASSWRD) {
   throw new Error(`Please fill in 'USERNAME' & 'PASSWORD' values in your .env-file!`);
 }
 
 const main = async () => {
-  const httpService = new HttpService(USERNAME, PASSWORD);
+  const httpService = new HttpService(USRNAME, PASSWRD);
 
   const hubs = await httpService.listHubs();
   console.log('P2P_DID', hubs[0].p2p_did);
